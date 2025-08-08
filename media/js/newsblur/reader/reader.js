@@ -6790,6 +6790,12 @@
                     });
                 }
             });
+            $.targetIs(e, { tagSelector: '.NB-menu-fetch-all' }, function ($t, $p) {
+                e.preventDefault();
+                if (!$t.hasClass('NB-disabled')) {
+                    console.log("Fetching all");
+                }
+            });
             $.targetIs(e, { tagSelector: '.NB-menu-manage-theme' }, function ($t, $p) {
                 e.preventDefault();
             });
