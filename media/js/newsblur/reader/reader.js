@@ -5278,6 +5278,19 @@
                 NEWSBLUR.app.taskbar_info.show_stories_error);
         },
 
+        force_fetch_all_feeds: function() {
+            var feeds = this.model.get_feeds();
+            for (var feed of feeds.models) {
+                feed.set({
+                    fetched_once: false,
+                    has_exception: false
+                });
+
+                this.model.save_exception_retry(feed.id, _.bind(this.force_feed_refresh, this, feed.id),
+                    NEWSBLUR.app.taskbar_info.show_stories_error);
+            }
+        },
+
         setup_socket_realtime_unread_counts: function (force) {
             if (!force && NEWSBLUR.Globals.is_anonymous) return;
             // if (!force && !NEWSBLUR.Globals.is_premium) return;
@@ -6793,7 +6806,7 @@
             $.targetIs(e, { tagSelector: '.NB-menu-fetch-all' }, function ($t, $p) {
                 e.preventDefault();
                 if (!$t.hasClass('NB-disabled')) {
-                    console.log("Fetching all");
+                    self.force_fetch_all_feeds();
                 }
             });
             $.targetIs(e, { tagSelector: '.NB-menu-manage-theme' }, function ($t, $p) {
