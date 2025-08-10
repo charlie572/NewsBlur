@@ -765,7 +765,11 @@ class Feed(models.Model):
 
     def setup_feed_for_premium_subscribers(self, allow_skip_resync=False):
         self.count_subscribers()
-        self.count_similar_feeds()
+
+        # I don't want this feature at the moment. It requires an OpenAI API key to
+        # get vector embeddings.
+        # self.count_similar_feeds()
+
         self.set_next_scheduled_update(verbose=settings.DEBUG)
         self.sync_redis(allow_skip_resync=allow_skip_resync)
 
